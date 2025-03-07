@@ -1,4 +1,4 @@
-let speechSynth = window.speechSynthesis;
+    let speechSynth = window.speechSynthesis;
     let utterance = null;
     let isPaused = false;
     let lastReadPosition = 0;
