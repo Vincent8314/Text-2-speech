@@ -1,5 +1,3 @@
-"use strict";
-
 let speechSynth = window.speechSynthesis;
     let utterance = null;
     let isPaused = false;
