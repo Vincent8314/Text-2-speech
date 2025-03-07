@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Text-to-Speech Reader</title>
+    <style>
+    :root {
+        /* Palette Journal Sépia renforcée */
+        --primary-color: #733c2a;        /* Bordeaux foncé (titre) */
+        --primary-hover: #5d2e21;        /* Bordeaux foncé hover */
+        --bg-color: #e9d9be;             /* Beige papier ancien plus foncé (fond) - MODIFIÉ */
+        --container-bg: #f3e6d0;         /* Crème papier ancien (conteneur) - MODIFIÉ */
+        --text-color: #4a392c;           /* Brun foncé (texte) - MODIFIÉ légèrement plus foncé */
+        --secondary-color: #2e483d;      /* Vert foncé (boutons secondaires) - MODIFIÉ */
+        --secondary-hover: #243a32;      /* Vert foncé hover - MODIFIÉ */
+        --warning-color: #bc5215;        /* Orange-rouille (bouton warning) */
+        --warning-hover: #a44512;        /* Orange-rouille hover */
+        --file-button-color: #733c2a;    /* Bordeaux foncé (bouton fichier) - MODIFIÉ */
+        --file-button-hover: #5d2e21;    /* Bordeaux foncé hover - MODIFIÉ */
+        --pause-button-color: #2e483d;   /* Vert foncé (bouton pause) */
+        --pause-button-hover: #243a32;   /* Vert foncé hover */
+        --input-bg: #faf3e3;             /* Crème clair (champs input) */
+        --input-border: #c9b99f;         /* Beige moyen (bordures) - MODIFIÉ plus foncé */
+    }
+    
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    .jetbrains-mono {
+        font-family: "Courier", monospace;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .roboto-mono {
+        font-family: "Courier", monospace;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: "Courier", monospace;
+        background: var(--bg-color);
+        color: var(--text-color);
+        overflow-x: hidden;
+        box-sizing: border-box;
+        /* Texture de papier subtile */
+        background-image: url("data:image/png;base64,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");
+        background-attachment: fixed;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 30px;
+        background-color: var(--container-bg);
+        border-radius: 16px;
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
+        border: 1px solid var(--input-border);
+    }
+
+    h1 {
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2.2em;
+        font-family: "Courier", monospace;
+    }
+
+    #file-button {
+        background-color: var(--file-button-color);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: "Courier", monospace;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        flex: 1;
+        border: none;
+    }
+
+    #file-button:hover {
+        background-color: var(--file-button-hover);
+        transform: translateY(-2px);
+    }
+
+    .controls {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f5ebd9;
+        border-radius: 12px;
+        flex-wrap: wrap;
+        border: 1px solid var(--input-border);
+    }
+
+    .control-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+    }
+
+    label {
+        font-weight: 600;
+        color: var(--text-color);
+        white-space: nowrap;
+    }
+
+    select {
+        padding: 10px 15px;
+        border-radius: 8px;
+        border: 1px solid var(--input-border);
+        background-color: var(--input-bg);
+        color: var(--text-color);
+        font-size: 1em;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        min-width: 120px;
+        flex: 1;
+        font-family: "Courier", monospace;
+    }
+
+    select:hover {
+        border-color: var(--primary-color);
+    }
+
+    #text-area {
+        width: 100%;
+        min-height: 32vh;
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid var(--input-border);
+        border-radius: 12px;
+        font-size: 16px;
+        font-family: "Courier", monospace;
+        line-height: 1.6;
+        resize: vertical;
+        transition: border-color 0.3s ease;
+        background-color: #fdf8eb;
+        color: var(--text-color);
+    }
+
+    #text-area:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(115, 60, 42, 0.1);
+    }
+
+    .button-container {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+        width: 100%;
+    }
+
+    .text-controls {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    button {
+        padding: 12px 25px;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: "Courier", monospace;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: center;
+        flex: 1;
+    }
+
+    #play-button {
+        background-color: var(--primary-color);
+    }
+
+    #play-button:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+    }
+
+    #pause-button {
+        background-color: var(--pause-button-color);
+    }
+
+    #pause-button:hover {
+        background-color: var(--pause-button-hover);
+        transform: translateY(-2px);
+    }
+
+    #restart-button {
+        background-color: var(--warning-color);
+    }
+
+    #restart-button:hover {
+        background-color: var(--warning-hover);
+        transform: translateY(-2px);
+    }
+
+    #clear-button {
+        background-color: var(--warning-color);
+    }
+
+    #clear-button:hover {
+        background-color: var(--warning-hover);
+        transform: translateY(-2px);
+    }
+
+    #paste-button {
+        background-color: var(--secondary-color);
+    }
+
+    #paste-button:hover {
+        background-color: var(--secondary-hover);
+        transform: translateY(-2px);
+    }
+
+    .file-input {
+        display: none;
+    }
+
+    .margin-bottom {
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            width: 92%;
+            margin: 10px auto;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 12px;
+            gap: 12px;
+        }
+
+        .control-group {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        select {
+            width: 100%;
+        }
+
+        .text-controls {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .button-container {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 0;
+            margin: 0;
+            /* Remplacer height: 48px; par ces deux lignes */
+            min-height: 48px;
+            max-height: 48px;
+            overflow: hidden;    /* Optionnel, pour gérer tout débordement */
+        }
+
+        #text-area {
+            padding: 15px;
+            margin: 15px 0;
+            max-height: 15vh;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Text-to-Speech Reader</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="voice-select">🎤 Voix:</label>
+                <select id="voice-select"></select>
+            </div>
+            
+            <div class="control-group">
+                <label for="speed">⚡ Vitesse:</label>
+                <select id="speed">
+                    <option value="0.5">0.5x</option>
+                    <option value="0.75">0.75x</option>
+                    <option value="1" selected>1x</option>
+                    <option value="1.25">1.25x</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2">2x</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="text-controls margin-bottom">
+            <button id="file-button">📄 Choisir un fichier .txt</button>
+            <input type="file" id="fileInput" class="file-input" accept=".txt">
+        </div>
+
+        <div class="text-controls">
+            <button id="paste-button">📋 Coller un texte</button>
+            <button id="clear-button">🗑️ Effacer le contenu</button>         
+        </div>
+
+        <textarea id="text-area" placeholder="Collez ou dictez votre texte ici..."></textarea>
+        
+        <div class="button-container">
+            <button id="play-button">▶ Lire</button>
+            <button id="pause-button">❙❙ Pause</button>
+            <button id="restart-button">⭮ Redémarrer</button>
+        </div>
+    </div>
+    <script>
+    let speechSynth = window.speechSynthesis;
+    let utterance = null;
+    let isPaused = false;
+    let lastReadPosition = 0;
+    const TEXT_STORAGE_KEY = 'ttsReaderText';
+    const POSITION_STORAGE_KEY = 'ttsReaderPosition';
+    const VOICE_STORAGE_KEY = 'ttsReaderVoice';
+    const SPEED_STORAGE_KEY = 'ttsReaderSpeed';
+    const PAUSED_STORAGE_KEY = 'ttsReaderPaused';
+
+    // Fonction pour sauvegarder l'état actuel
+    function saveCurrentState() {
+        const textArea = document.getElementById('text-area');
+        const voiceSelect = document.getElementById('voice-select');
+        const speedSelect = document.getElementById('speed');
+
+        // Sauvegarder le texte actuel
+        localStorage.setItem(TEXT_STORAGE_KEY, textArea.value);
+
+        // Sauvegarder la position approximative
+        localStorage.setItem(POSITION_STORAGE_KEY, lastReadPosition.toString());
+
+        // Sauvegarder l'état de pause
+        localStorage.setItem(PAUSED_STORAGE_KEY, isPaused.toString());
+
+        // Sauvegarder les préférences utilisateur
+        if (voiceSelect.value) {
+            localStorage.setItem(VOICE_STORAGE_KEY, voiceSelect.value);
+        }
+
+        if (speedSelect.value) {
+            localStorage.setItem(SPEED_STORAGE_KEY, speedSelect.value);
+        }
+    }
+
+    function isMobileDevice() {
+        return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    }
+
+    function populateVoiceList() {
+        const voiceSelect = document.getElementById('voice-select');
+        voiceSelect.innerHTML = '';
+        const voices = speechSynth.getVoices();
+
+        // Déterminer si nous sommes sur un appareil mobile
+        const isMobile = isMobileDevice();
+
+        // Voix spécifiques pour smartphone
+        const specificVoices = {
+            french: "Thomas", // Voix française
+            english: "Daniel", // Voix anglaise
+            dutch: "Xander"   // Voix néerlandaise
+        };
+
+        if (isMobile) {
+            // Sur smartphone, uniquement les 3 voix spécifiques
+            const priorityVoicesMap = new Map();
+            
+            // Chercher les voix spécifiques
+            voices.forEach(voice => {
+                // Recherche de Thomas (français)
+                if (voice.name.includes(specificVoices.french) && voice.lang.includes('fr')) {
+                    priorityVoicesMap.set(voice.name, {
+                        voice: voice,
+                        priority: 1,
+                        label: `${voice.name} (FR)`
+                    });
+                }
+                // Recherche de Daniel (anglais)
+                else if (voice.name.includes(specificVoices.english) && voice.lang.includes('en')) {
+                    priorityVoicesMap.set(voice.name, {
+                        voice: voice,
+                        priority: 2,
+                        label: `${voice.name} (GB)`
+                    });
+                }
+                // Recherche de Xander (néerlandais)
+                else if (voice.name.includes(specificVoices.dutch) && voice.lang.includes('nl')) {
+                    priorityVoicesMap.set(voice.name, {
+                        voice: voice,
+                        priority: 3,
+                        label: `${voice.name} (NL)`
+                    });
+                }
+            });
+
+            // Convertir la Map en array et trier par priorité
+            const priorityVoices = Array.from(priorityVoicesMap.values())
+                .sort((a, b) => a.priority - b.priority);
+
+            // Ajouter les voix au sélecteur
+            priorityVoices.forEach((voiceInfo) => {
+                const option = document.createElement('option');
+                option.textContent = voiceInfo.label;
+                option.value = voices.indexOf(voiceInfo.voice);
+                voiceSelect.appendChild(option);
+            });
+
+            // Si aucune des voix spécifiques n'a été trouvée, ajouter un message
+            if (voiceSelect.options.length === 0) {
+                const option = document.createElement('option');
+                option.textContent = "Aucune voix spécifique disponible";
+                option.value = -1;
+                voiceSelect.appendChild(option);
+                console.warn("Aucune des voix spécifiques n'a été trouvée");
+            }
+        } else {
+            // Pour PC et tablette, garder le comportement original
+            // Filtrer les voix par langue d'intérêt
+            const frenchVoices = voices.filter(voice => voice.lang.includes('fr'));
+            const dutchVoices = voices.filter(voice => 
+                voice.lang.includes('nl-NL') || 
+                voice.lang.startsWith('nl')
+            );
+            const flemishVoices = voices.filter(voice => voice.lang.includes('nl-BE'));
+
+            // Combiner toutes les voix d'intérêt, en évitant les doublons
+            const priorityVoicesMap = new Map();
+
+            // Fonction pour simplifier les noms de voix
+            function simplifyVoiceName(name, lang) {
+                // Supprimer "Microsoft" et autres préfixes de fournisseurs
+                let simplified = name.replace("Microsoft ", "");
+                // Supprimer les suffixes spécifiques à la langue
+                simplified = simplified.replace(/ - French.*$/, "");
+                simplified = simplified.replace(/ - English.*$/, "");
+                simplified = simplified.replace(/ - Dutch.*$/, "");
+                simplified = simplified.replace(/ - Flemish.*$/, "");
+                // Pour les autres langues, juste supprimer tout après un tiret
+                simplified = simplified.replace(/ -.*$/, "");
+                
+                return simplified;
+            }
+
+            // Fonction pour obtenir le code de langue court
+            function getShortLangCode(langCode) {
+                if (langCode.includes('fr')) return "FR";
+                if (langCode.includes('nl-BE')) return "BE";
+                if (langCode.includes('nl')) return "NL";
+                if (langCode.includes('en')) return "EN";
+                // Retourner les deux premiers caractères en majuscule pour les autres langues
+                return langCode.substring(0, 2).toUpperCase();
+            }
+
+            // Ajouter les voix françaises d'abord
+            frenchVoices.forEach(voice => {
+                if (!priorityVoicesMap.has(voice.name)) {
+                    priorityVoicesMap.set(voice.name, {
+                        voice: voice,
+                        priority: 1,
+                        label: `${simplifyVoiceName(voice.name, voice.lang)} (${getShortLangCode(voice.lang)})`
+                    });
+                }
+            });
+
+            // Ajouter les voix flamandes ensuite
+            flemishVoices.forEach(voice => {
+                if (!priorityVoicesMap.has(voice.name)) {
+                    priorityVoicesMap.set(voice.name, {
+                        voice: voice,
+                        priority: 2,
+                        label: `${simplifyVoiceName(voice.name, voice.lang)} (${getShortLangCode(voice.lang)})`
+                    });
+                }
+            });
+
+            // Ajouter les voix néerlandaises ensuite
+            dutchVoices.forEach(voice => {
+                // Éviter de dupliquer les voix flamandes qui sont déjà dans la liste
+                if (!priorityVoicesMap.has(voice.name)) {
+                    priorityVoicesMap.set(voice.name, {
+                        voice: voice,
+                        priority: 3,
+                        label: `${simplifyVoiceName(voice.name, voice.lang)} (${getShortLangCode(voice.lang)})`
+                    });
+                }
+            });
+
+            // Ajouter les autres voix ensuite
+            voices.forEach(voice => {
+                // Ne pas inclure les voix Google et éviter les duplications
+                if (!voice.name.includes('Google') && !priorityVoicesMap.has(voice.name)) {
+                    priorityVoicesMap.set(voice.name, {
+                        voice: voice,
+                        priority: 4,
+                        label: `${simplifyVoiceName(voice.name, voice.lang)} (${getShortLangCode(voice.lang)})`
+                    });
+                }
+            });
+
+            // Convertir la Map en array, trier par priorité et ajouter au sélecteur
+            const priorityVoices = Array.from(priorityVoicesMap.values())
+                .sort((a, b) => a.priority - b.priority);
+
+            // Ajouter les voix au sélecteur
+            priorityVoices.forEach((voiceInfo) => {
+                const option = document.createElement('option');
+                option.textContent = voiceInfo.label;
+                option.value = voices.indexOf(voiceInfo.voice);
+                voiceSelect.appendChild(option);
+            });
+
+            // S'il n'y a aucune voix dans la liste, ajouter un message
+            if (voiceSelect.options.length === 0) {
+                const option = document.createElement('option');
+                option.textContent = "Aucune voix disponible";
+                option.value = -1;
+                voiceSelect.appendChild(option);
+                console.warn("Aucune voix n'a été trouvée dans le navigateur");
+            }
+        }
+
+        // Restaurer la voix précédemment sélectionnée si disponible
+        const savedVoice = localStorage.getItem(VOICE_STORAGE_KEY);
+        if (savedVoice && voiceSelect.options.length > 0) {
+            // Vérifier si la voix sauvegardée existe toujours
+            for (let i = 0; i < voiceSelect.options.length; i++) {
+                if (voiceSelect.options[i].value === savedVoice) {
+                    voiceSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            // Si la voix n'a pas été trouvée, sélectionner la première option
+            if (!voiceSelect.selectedIndex && voiceSelect.options.length > 0) {
+                voiceSelect.selectedIndex = 0;
+            }
+        } else if (voiceSelect.options.length > 0) {
+            voiceSelect.selectedIndex = 0;
+        }
+    }
+
+    // Initialiser la liste des voix dès que possible
+    if (speechSynth.onvoiceschanged !== undefined) {
+        speechSynth.onvoiceschanged = populateVoiceList;
+    } else {
+        // Fallback pour certains navigateurs
+        setTimeout(populateVoiceList, 500);
+    }
+
+    // Gestion du fichier
+    const fileButton = document.getElementById('file-button');
+    const fileInput = document.getElementById('fileInput');
+    const textArea = document.getElementById('text-area');
+
+    fileButton.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', handleFileSelect);
+
+    function handleFileSelect(e) {
+        const file = e.target.files[0];
+        readFile(file);
+    }
+
+    function readFile(file) {
+        if (file && file.type === 'text/plain') {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                textArea.value = e.target.result;
+                // Réinitialiser la position car c'est un nouveau texte
+                lastReadPosition = 0;
+                isPaused = false;
+                saveCurrentState();
+                updatePlayButton();
+            };
+            reader.readAsText(file);
+        } else {
+            alert('Veuillez sélectionner un fichier texte (.txt)');
+        }
+    }
+
+    // Fonction pour effacer le contenu
+    document.getElementById('clear-button').addEventListener('click', () => {
+        textArea.value = '';
+        stopSpeech();
+        lastReadPosition = 0;
+        isPaused = false;
+        saveCurrentState();
+        updatePlayButton();
+    });
+
+    // Fonction pour coller le contenu du presse-papiers
+    document.getElementById('paste-button').addEventListener('click', async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            textArea.value = text;
+            // Réinitialiser la position car c'est un nouveau texte
+            lastReadPosition = 0;
+            isPaused = false;
+            saveCurrentState();
+            updatePlayButton();
+        } catch (err) {
+            alert('Impossible d\'accéder au presse-papiers. Veuillez vérifier les permissions de votre navigateur.');
+            console.error('Erreur lors de la lecture du presse-papiers:', err);
+        }
+    });
+
+    // Fonction pour arrêter complètement la synthèse vocale
+    function stopSpeech() {
+        if (speechSynth.speaking) {
+            speechSynth.cancel();
+        }
+        isPaused = false;
+        updatePlayButton();
+    }
+
+    // Mettre à jour le libellé du bouton Play
+    function updatePlayButton() {
+        const playBtn = document.getElementById('play-button');
+
+        if (isPaused) {
+            playBtn.innerHTML = '▶ Reprendre';
+        } else if (lastReadPosition > 0) {
+            playBtn.innerHTML = '▶ Continuer';
+        } else {
+            playBtn.innerHTML = '▶ Lire';
+        }
+    }
+
+    // Contrôles de lecture
+    document.getElementById('play-button').addEventListener('click', () => {
+        // Si on est en pause après rechargement de la page, traiter spécialement
+        if (isPaused && !speechSynth.speaking) {
+            // Créer une nouvelle utterance à partir de la position sauvegardée
+            const text = document.getElementById('text-area').value.trim();
+            if (text && lastReadPosition > 0 && lastReadPosition < text.length) {
+                const textToRead = text.substring(lastReadPosition);
+                utterance = new SpeechSynthesisUtterance(textToRead);
+                
+                const selectedVoice = document.getElementById('voice-select').value;
+                const voices = speechSynth.getVoices();
+                if (selectedVoice >= 0 && selectedVoice < voices.length) {
+                    utterance.voice = voices[selectedVoice];
+                }
+                utterance.rate = parseFloat(document.getElementById('speed').value);
+                
+                // Définir la langue en fonction de la voix sélectionnée
+                if (utterance.voice) {
+                    utterance.lang = utterance.voice.lang;
+                } else {
+                    utterance.lang = 'fr-FR';
+                }
+                
+                // Utiliser l'événement onboundary pour suivre la position
+                utterance.onboundary = function(event) {
+                    if (event.name === 'word' || event.name === 'sentence') {
+                        lastReadPosition += event.charIndex;
+                        if (event.name === 'sentence') {
+                            saveCurrentState();
+                        }
+                    }
+                };
+                
+                // Gérer la fin de la lecture
+                utterance.onend = function() {
+                    isPaused = false;
+                    lastReadPosition = 0;
+                    saveCurrentState();
+                    updatePlayButton();
+                };
+                
+                speechSynth.speak(utterance);
+                isPaused = false;
+                updatePlayButton();
+                return;
+            }
+        }
+
+        // Si on est en pause pendant la session actuelle, on reprend la lecture
+        if (speechSynth.speaking && speechSynth.paused) {
+            speechSynth.resume();
+            isPaused = false;
+            updatePlayButton();
+            return;
+        }
+
+        // Si une lecture est déjà en cours (et pas en pause), on l'arrête
+        if (speechSynth.speaking && !speechSynth.paused) {
+            speechSynth.cancel();
+        }
+
+        // On commence une nouvelle lecture
+        const text = document.getElementById('text-area').value.trim();
+        if (text) {
+            // Vérifier si c'est le même texte que celui sauvegardé et s'il y a une position
+            if (lastReadPosition > 0 && lastReadPosition < text.length) {
+                const textToRead = text.substring(lastReadPosition);
+                utterance = new SpeechSynthesisUtterance(textToRead);
+            } else {
+                // Sinon, commencer depuis le début
+                utterance = new SpeechSynthesisUtterance(text);
+                lastReadPosition = 0;
+            }
+            
+            const selectedVoice = document.getElementById('voice-select').value;
+            const voices = speechSynth.getVoices();
+            if (selectedVoice >= 0 && selectedVoice < voices.length) {
+                utterance.voice = voices[selectedVoice];
+            }
+            utterance.rate = parseFloat(document.getElementById('speed').value);
+            
+            // Définir la langue en fonction de la voix sélectionnée
+            if (utterance.voice) {
+                utterance.lang = utterance.voice.lang;
+            } else {
+                utterance.lang = 'fr-FR';
+            }
+            
+            // Utiliser l'événement onboundary pour suivre la position
+            utterance.onboundary = function(event) {
+                if (event.name === 'word' || event.name === 'sentence') {
+                    lastReadPosition += event.charIndex;
+                    // Limiter la fréquence des sauvegardes
+                    if (event.name === 'sentence') {
+                        saveCurrentState();
+                    }
+                }
+            };
+            
+            // Gérer la fin de la lecture
+            utterance.onend = function() {
+                isPaused = false;
+                // Si on arrive à la fin, réinitialiser la position
+                lastReadPosition = 0;
+                saveCurrentState();
+                updatePlayButton();
+            };
+            
+            speechSynth.speak(utterance);
+            isPaused = false;
+            updatePlayButton();
+        }
+    });
+
+    document.getElementById('pause-button').addEventListener('click', () => {
+        if (speechSynth.speaking) {
+            if (speechSynth.paused) {
+                speechSynth.resume();
+                isPaused = false;
+            } else {
+                speechSynth.pause();
+                isPaused = true;
+                // Sauvegarder l'état lors de la mise en pause
+                saveCurrentState();
+            }
+            updatePlayButton();
+        }
+    });
+
+    document.getElementById('restart-button').addEventListener('click', () => {
+        // Arrêter la lecture en cours
+        stopSpeech();
+
+        // Réinitialiser la position
+        lastReadPosition = 0;
+        isPaused = false;
+        saveCurrentState();
+        updatePlayButton();
+
+        // Commencer une nouvelle lecture depuis le début
+        const text = document.getElementById('text-area').value.trim();
+        if (text) {
+            utterance = new SpeechSynthesisUtterance(text);
+            
+            const selectedVoice = document.getElementById('voice-select').value;
+            const voices = speechSynth.getVoices();
+            if (selectedVoice >= 0 && selectedVoice < voices.length) {
+                utterance.voice = voices[selectedVoice];
+            }
+            utterance.rate = parseFloat(document.getElementById('speed').value);
+            
+            // Définir la langue en fonction de la voix sélectionnée
+            if (utterance.voice) {
+                utterance.lang = utterance.voice.lang;
+            } else {
+                utterance.lang = 'fr-FR';
+            }
+            
+            // Même gestionnaires d'événements que pour la lecture normale
+            utterance.onboundary = function(event) {
+                if (event.name === 'word' || event.name === 'sentence') {
+                    lastReadPosition += event.charIndex;
+                    if (event.name === 'sentence') {
+                        saveCurrentState();
+                    }
+                }
+            };
+            
+            utterance.onend = function() {
+                isPaused = false;
+                lastReadPosition = 0;
+                saveCurrentState();
+                updatePlayButton();
+            };
+            
+            speechSynth.speak(utterance);
+        }
+    });
+
+    // Charger le texte sauvegardé au démarrage
+    function loadSavedContent() {
+        // Restaurer le texte
+        const savedText = localStorage.getItem(TEXT_STORAGE_KEY);
+        if (savedText) {
+            textArea.value = savedText;
+        }
+
+        // Restaurer la vitesse
+        const savedSpeed = localStorage.getItem(SPEED_STORAGE_KEY);
+        if (savedSpeed) {
+            const speedSelect = document.getElementById('speed');
+            for (let i = 0; i < speedSelect.options.length; i++) {
+                if (speedSelect.options[i].value === savedSpeed) {
+                    speedSelect.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        // Récupérer la position
+        lastReadPosition = parseInt(localStorage.getItem(POSITION_STORAGE_KEY) || '0');
+
+        // Restaurer l'état de pause
+        isPaused = localStorage.getItem(PAUSED_STORAGE_KEY) === 'true';
+
+        updatePlayButton();
+    }
+
+    // Sauvegarder les modifications du texte
+    textArea.addEventListener('input', function() {
+        // Si le texte change, réinitialiser la position
+        if (textArea.value !== localStorage.getItem(TEXT_STORAGE_KEY)) {
+            lastReadPosition = 0;
+            isPaused = false;
+        }
+        saveCurrentState();
+        updatePlayButton();
+    });
+
+    // Sauvegarder les changements de voix et de vitesse
+    document.getElementById('voice-select').addEventListener('change', saveCurrentState);
+    document.getElementById('speed').addEventListener('change', saveCurrentState);
+
+    // Initialisation
+    window.addEventListener('DOMContentLoaded', () => {
+        populateVoiceList();
+        loadSavedContent();
+
+        // Forcer un chargement initial des voix si nécessaire
+        if (speechSynth.getVoices().length === 0) {
+            console.log("Chargement initial des voix...");
+            // Tentatives multiples pour s'assurer que les voix sont chargées
+            const checkVoices = setInterval(() => {
+                if (speechSynth.getVoices().length > 0) {
+                    console.log(`${speechSynth.getVoices().length} voix trouvées`);
+                    populateVoiceList();
+                    clearInterval(checkVoices);
+                }
+            }, 500);
+            
+            // Abandonner après 5 secondes si aucune voix n'est trouvée
+            setTimeout(() => {
+                if (speechSynth.getVoices().length === 0) {
+                    console.warn("Impossible de charger les voix après 5 secondes");
+                    clearInterval(checkVoices);
+                }
+            }, 5000);
+        }
+    });
+
+    // Sauvegarder l'état avant de quitter la page
+    window.addEventListener('beforeunload', function() {
+        saveCurrentState();
+    }); 
+</script>
+</body>
+</html>
