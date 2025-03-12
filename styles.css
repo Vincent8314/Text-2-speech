@@ -58,7 +58,7 @@ h1 {
     top: 20px;
     right: 20px;
     background-color: var(--primary-color);
-    color: white;
+    color: #e4f0ff;
     padding: 8px 15px;
     border-radius: 8px;
     cursor: pointer;
@@ -161,7 +161,7 @@ button {
     cursor: pointer;
     border: none;
     border-radius: 8px;
-    color: white;
+    color: #e4f0ff;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
