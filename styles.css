@@ -1,10 +1,10 @@
 :root {
     /* Palette inspirée de la capture d'écran */
-    --primary-color: #5451b6;         /* Bleu-violet pour boutons */
+    --primary-color: #2c0baf;         /* Bleu-violet pour boutons */
     --primary-hover: #4a46a0;         /* Bleu-violet hover */
     --primary-active: #3f3c8a;        /* Bleu-violet quand activé */
-    --secondary-color: #f16529;       /* Orange pour boutons suppression/pause */
-    --secondary-hover: #d55121;       /* Orange hover */
+    --secondary-color: #2c0baf;       /* Orange pour boutons suppression/pause */
+    --secondary-hover:  #4a46a0;      /* Orange hover */
     --bg-color: #2d2d47;              /* Fond bleu-nuit */
     --container-bg: #1f1f39;          /* Conteneur bleu nuit foncé */
     --text-color: #ffffff;            /* Texte blanc */
@@ -134,7 +134,7 @@ select:focus {
     width: 100%;
     min-height: 32vh;
     padding: 20px;
-    margin: 20px 0;
+    margin: 5px 0 -10px 0;
     border: 1px solid var(--input-border);
     border-radius: 12px;
     font-size: 16px;
@@ -284,7 +284,7 @@ button {
 
     #text-area {
         padding: 15px;
-        margin: 15px 0;
+        /*margin: 0px 0px 0px 0px;*/
         max-height: 15vh;
     }
 }
