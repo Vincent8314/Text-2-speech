@@ -1,22 +1,19 @@
-:root {
-    /* Palette Journal Sépia renforcée */
-    --primary-color: #733c2a;        /* Bordeaux foncé (titre) */
-    --primary-hover: #5d2e21;        /* Bordeaux foncé hover */
-    --bg-color: #e9d9be;             /* Beige papier ancien plus foncé (fond) - MODIFIÉ */
-    --container-bg: #f3e6d0;         /* Crème papier ancien (conteneur) - MODIFIÉ */
-    --text-color: #4a392c;           /* Brun foncé (texte) - MODIFIÉ légèrement plus foncé */
-    --secondary-color: #2e483d;      /* Vert foncé (boutons secondaires) - MODIFIÉ */
-    --secondary-hover: #243a32;      /* Vert foncé hover - MODIFIÉ */
-    --warning-color: #bc5215;        /* Orange-rouille (bouton warning) */
-    --warning-hover: #a44512;        /* Orange-rouille hover */
-    --file-button-color: #733c2a;    /* Bordeaux foncé (bouton fichier) - MODIFIÉ */
-    --file-button-hover: #5d2e21;    /* Bordeaux foncé hover - MODIFIÉ */
-    --pause-button-color: #2e483d;   /* Vert foncé (bouton pause) */
-    --pause-button-hover: #243a32;   /* Vert foncé hover */
-    --input-bg: #faf3e3;             /* Crème clair (champs input) */
-    --input-border: #c9b99f;         /* Beige moyen (bordures) - MODIFIÉ plus foncé */
-}
+/* Styles pour le Text-to-Speech Reader - Thème bleu-violet */
 
+:root {
+    /* Palette inspirée de la capture d'écran */
+    --primary-color: #5451b6;         /* Bleu-violet pour tous les boutons */
+    --primary-hover: #4a46a0;         /* Bleu-violet hover */
+    --primary-active: #3f3c8a;        /* Bleu-violet quand activé/cliqué */
+    --secondary-color: #f16529;       /* Orange pour les boutons de suppression */
+    --secondary-hover: #d55121;       /* Orange hover */
+    --bg-color: #2d2d47;              /* Fond foncé bleu-nuit */
+    --container-bg: #1f1f39;          /* Bleu nuit plus foncé (conteneur) */
+    --text-color: #ffffff;            /* Blanc (texte) */
+    --input-bg: #f5f0e8;              /* Beige clair (champs input et textarea) */
+    --input-text: #333333;            /* Texte foncé pour les zones claires */
+    --input-border: #9f9fc8;          /* Violet pâle (bordures) */
+}
 
 * {
     box-sizing: border-box;
@@ -48,8 +45,7 @@ body {
     color: var(--text-color);
     overflow-x: hidden;
     box-sizing: border-box;
-    /* Texture de papier subtile */
-    background-image: url("data:image/png;base64,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");
+    background-image: linear-gradient(135deg, #2d2d47 0%, #1f1f39 100%);
     background-attachment: fixed;
 }
 
@@ -60,48 +56,61 @@ body {
     padding: 30px;
     background-color: var(--container-bg);
     border-radius: 16px;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
-    border: 1px solid var(--input-border);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
 }
 
 h1 {
-    color: var(--primary-color);
+    color: var(--text-color);
     text-align: center;
     margin-bottom: 30px;
     font-size: 2.2em;
     font-family: "Courier", monospace;
-}
-
-#file-button {
-    background-color: var(--file-button-color);
-    color: white;
-    padding: 12px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    font-family: "Courier", monospace;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-    flex: 1;
-    border: none;
+    gap: 12px;
 }
 
-#file-button:hover {
-    background-color: var(--file-button-hover);
+h1::before {
+    content: "✨";
+    font-size: 0.8em;
+}
+
+#language-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+#language-toggle:hover {
+    background-color: var(--primary-hover);
     transform: translateY(-2px);
 }
 
+#language-toggle:active {
+    background-color: var(--primary-active);
+    transform: translateY(0);
+}
+
+/* Contrôles principaux */
 .controls {
     display: flex;
     gap: 20px;
     align-items: center;
     margin-bottom: 20px;
     padding: 15px;
-    background-color: #f5ebd9;
+    background-color: var(--input-bg);
     border-radius: 12px;
     flex-wrap: wrap;
     border: 1px solid var(--input-border);
@@ -116,7 +125,7 @@ h1 {
 
 label {
     font-weight: 600;
-    color: var(--text-color);
+    color: var(--input-text);
     white-space: nowrap;
 }
 
@@ -125,19 +134,27 @@ select {
     border-radius: 8px;
     border: 1px solid var(--input-border);
     background-color: var(--input-bg);
-    color: var(--text-color);
+    color: var(--input-text);
     font-size: 1em;
     transition: all 0.3s ease;
     cursor: pointer;
     min-width: 120px;
     flex: 1;
     font-family: "Courier", monospace;
+    font-weight: 500;
 }
 
 select:hover {
     border-color: var(--primary-color);
 }
 
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(84, 81, 182, 0.2);
+}
+
+/* Zone de texte */
 #text-area {
     width: 100%;
     min-height: 32vh;
@@ -150,16 +167,75 @@ select:hover {
     line-height: 1.6;
     resize: vertical;
     transition: border-color 0.3s ease;
-    background-color: #fdf8eb;
-    color: var(--text-color);
+    background-color: var(--input-bg);
+    color: var(--input-text);
 }
 
 #text-area:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(115, 60, 42, 0.1);
+    box-shadow: 0 0 0 3px rgba(84, 81, 182, 0.1);
 }
 
+/* Style unifié pour tous les boutons */
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Courier", monospace;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    flex: 1;
+    background-color: var(--primary-color);
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:active, button.active {
+    background-color: var(--primary-active);
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Bouton pour choisir un fichier */
+#file-button {
+    background-color: var(--primary-color);
+}
+
+#file-button:hover {
+    background-color: var(--primary-hover);
+}
+
+#file-button:active {
+    background-color: var(--primary-active);
+}
+
+/* Exception pour les boutons de suppression en orange */
+#clear-button {
+    background-color: var(--secondary-color);
+}
+
+#clear-button:hover {
+    background-color: var(--secondary-hover);
+}
+
+#clear-button:active {
+    background-color: var(--secondary-color);
+    opacity: 0.9;
+}
+
+/* Disposition des boutons */
 .button-container {
     display: flex;
     gap: 15px;
@@ -176,68 +252,6 @@ select:hover {
     width: 100%;
 }
 
-button {
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: 600;
-    font-family: "Courier", monospace;
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: center;
-    flex: 1;
-}
-
-#play-button {
-    background-color: var(--primary-color);
-}
-
-#play-button:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-2px);
-}
-
-#pause-button {
-    background-color: var(--pause-button-color);
-}
-
-#pause-button:hover {
-    background-color: var(--pause-button-hover);
-    transform: translateY(-2px);
-}
-
-#restart-button {
-    background-color: var(--warning-color);
-}
-
-#restart-button:hover {
-    background-color: var(--warning-hover);
-    transform: translateY(-2px);
-}
-
-#clear-button {
-    background-color: var(--warning-color);
-}
-
-#clear-button:hover {
-    background-color: var(--warning-hover);
-    transform: translateY(-2px);
-}
-
-#paste-button {
-    background-color: var(--secondary-color);
-}
-
-#paste-button:hover {
-    background-color: var(--secondary-hover);
-    transform: translateY(-2px);
-}
-
 .file-input {
     display: none;
 }
@@ -246,6 +260,7 @@ button {
     margin-bottom: 10px;
 }
 
+/* Adaptation pour mobile */
 @media (max-width: 768px) {
     .container {
         width: 92%;
@@ -257,6 +272,14 @@ button {
     h1 {
         font-size: 1.8em;
         margin-bottom: 20px;
+    }
+
+    #language-toggle {
+        position: relative;
+        top: 0;
+        right: 0;
+        width: 100%;
+        margin-bottom: 15px;
     }
 
     .controls {
@@ -293,10 +316,9 @@ button {
         width: 100%;
         padding: 12px 0;
         margin: 0;
-        /* Remplacer height: 48px; par ces deux lignes */
         min-height: 48px;
         max-height: 48px;
-        overflow: hidden;    /* Optionnel, pour gérer tout débordement */
+        overflow: hidden;
     }
 
     #text-area {

@@ -572,3 +572,104 @@
     window.addEventListener('beforeunload', function() {
         saveCurrentState();
     }); 
+
+    // Gestion multilingue
+const translations = {
+    'fr': {
+        'title': 'Lecteur Text-to-Speech',
+        'voice': '🎤 Voix:',
+        'speed': '⚡ Vitesse:',
+        'chooseFile': '📄 Choisir un fichier .txt',
+        'paste': '📋 Coller un texte',
+        'clear': '🗑️ Effacer le contenu',
+        'play': '▶ Lire',
+        'resume': '▶ Reprendre',
+        'continue': '▶ Continuer',
+        'pause': '❙❙ Pause',
+        'restart': '⭮ Redémarrer',
+        'placeholder': 'Collez ou dictez votre texte ici...'
+    },
+    'en': {
+        'title': 'Text-to-Speech Reader',
+        'voice': '🎤 Voice:',
+        'speed': '⚡ Speed:',
+        'chooseFile': '📄 Choose a .txt file',
+        'paste': '📋 Paste text',
+        'clear': '🗑️ Clear content',
+        'play': '▶ Play',
+        'resume': '▶ Resume',
+        'continue': '▶ Continue',
+        'pause': '❙❙ Pause',
+        'restart': '⭮ Restart',
+        'placeholder': 'Paste or dictate your text here...'
+    }
+};
+
+let currentLang = 'fr'; // Langue par défaut
+
+function toggleLanguage() {
+    currentLang = currentLang === 'fr' ? 'en' : 'fr';
+    updateUILanguage();
+    // Sauvegarder la préférence de langue
+    localStorage.setItem('ttsReaderLang', currentLang);
+}
+
+function updateUILanguage() {
+    // Mettre à jour le bouton de langue
+    document.getElementById('language-toggle').textContent = `🌐 ${currentLang === 'fr' ? 'FR | EN' : 'EN | FR'}`;
+    
+    // Mettre à jour le titre
+    document.querySelector('h1').textContent = translations[currentLang].title;
+    
+    // Mettre à jour les labels
+    document.querySelector('label[for="voice-select"]').textContent = translations[currentLang].voice;
+    document.querySelector('label[for="speed"]').textContent = translations[currentLang].speed;
+    
+    // Mettre à jour les boutons
+    document.getElementById('file-button').textContent = translations[currentLang].chooseFile;
+    document.getElementById('paste-button').textContent = translations[currentLang].paste;
+    document.getElementById('clear-button').textContent = translations[currentLang].clear;
+    
+    // Mise à jour conditionnelle du bouton play selon son état
+    updatePlayButton();
+    
+    document.getElementById('pause-button').textContent = translations[currentLang].pause;
+    document.getElementById('restart-button').textContent = translations[currentLang].restart;
+    
+    // Mettre à jour le placeholder du textarea
+    document.getElementById('text-area').placeholder = translations[currentLang].placeholder;
+}
+
+// Modifier la fonction updatePlayButton pour tenir compte de la langue
+function updatePlayButton() {
+    const playBtn = document.getElementById('play-button');
+
+    if (isPaused) {
+        playBtn.innerHTML = translations[currentLang].resume;
+    } else if (lastReadPosition > 0) {
+        playBtn.innerHTML = translations[currentLang].continue;
+    } else {
+        playBtn.innerHTML = translations[currentLang].play;
+    }
+}
+
+// Charger la préférence de langue au démarrage
+function loadLanguagePreference() {
+    const savedLang = localStorage.getItem('ttsReaderLang');
+    if (savedLang && (savedLang === 'fr' || savedLang === 'en')) {
+        currentLang = savedLang;
+        updateUILanguage();
+    }
+}
+
+// Ajouter l'événement au bouton de langue
+document.getElementById('language-toggle').addEventListener('click', toggleLanguage);
+
+// Ajouter l'initialisation de la langue à l'événement DOMContentLoaded
+window.addEventListener('DOMContentLoaded', () => {
+    populateVoiceList();
+    loadSavedContent();
+    loadLanguagePreference(); // Charger la préférence de langue
+
+    // ... reste du code d'initialisation inchangé
+});
