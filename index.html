@@ -11,8 +11,8 @@
 </head>
 <body>
     <div class="container">
-        <button id="language-toggle">🌐 EN | FR</button>
         <h1>✨ Text-to-Speech Reader</h1>
+        <button id="language-toggle">🌐 EN | FR</button>
         
         <div class="controls">
             <div class="control-group">
@@ -34,13 +34,10 @@
         </div>
 
         <div class="text-controls margin-bottom">
-            <button id="file-button">📄 Choisir un fichier .txt</button>
-            <input type="file" id="fileInput" class="file-input" accept=".txt">
-        </div>
-
-        <div class="text-controls">
+            <button id="file-button">📄 Choisir doc.txt</button>
+            <button id="clear-button">🗑️ Effacer le contenu</button>
             <button id="paste-button">📋 Coller un texte</button>
-            <button id="clear-button">🗑️ Effacer le contenu</button>         
+            <input type="file" id="fileInput" class="file-input" accept=".txt">
         </div>
 
         <textarea id="text-area" placeholder="Collez ou dictez votre texte ici..."></textarea>

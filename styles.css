@@ -1,38 +1,22 @@
-/* Styles pour le Text-to-Speech Reader - Thème bleu-violet */
-
 :root {
     /* Palette inspirée de la capture d'écran */
-    --primary-color: #5451b6;         /* Bleu-violet pour tous les boutons */
+    --primary-color: #5451b6;         /* Bleu-violet pour boutons */
     --primary-hover: #4a46a0;         /* Bleu-violet hover */
-    --primary-active: #3f3c8a;        /* Bleu-violet quand activé/cliqué */
-    --secondary-color: #f16529;       /* Orange pour les boutons de suppression */
+    --primary-active: #3f3c8a;        /* Bleu-violet quand activé */
+    --secondary-color: #f16529;       /* Orange pour boutons suppression/pause */
     --secondary-hover: #d55121;       /* Orange hover */
-    --bg-color: #2d2d47;              /* Fond foncé bleu-nuit */
-    --container-bg: #1f1f39;          /* Bleu nuit plus foncé (conteneur) */
-    --text-color: #ffffff;            /* Blanc (texte) */
-    --input-bg: #f5f0e8;              /* Beige clair (champs input et textarea) */
-    --input-text: #333333;            /* Texte foncé pour les zones claires */
-    --input-border: #9f9fc8;          /* Violet pâle (bordures) */
+    --bg-color: #2d2d47;              /* Fond bleu-nuit */
+    --container-bg: #1f1f39;          /* Conteneur bleu nuit foncé */
+    --text-color: #ffffff;            /* Texte blanc */
+    --input-bg: #f5f0e8;              /* Beige clair pour inputs */
+    --input-text: #333333;            /* Texte foncé pour zones claires */
+    --input-border: #9f9fc8;          /* Bordures violet pâle */
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
-
-.jetbrains-mono {
-    font-family: "Courier", monospace;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-}
-
-.roboto-mono {
-    font-family: "Courier", monospace;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
 }
 
 body {
@@ -67,15 +51,6 @@ h1 {
     margin-bottom: 30px;
     font-size: 2.2em;
     font-family: "Courier", monospace;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
-
-h1::before {
-    content: "✨";
-    font-size: 0.8em;
 }
 
 #language-toggle {
@@ -98,7 +73,7 @@ h1::before {
     transform: translateY(-2px);
 }
 
-#language-toggle:active {
+#language-toggle:active, #language-toggle.active {
     background-color: var(--primary-active);
     transform: translateY(0);
 }
@@ -193,71 +168,64 @@ button {
     gap: 8px;
     justify-content: center;
     flex: 1;
+    height: 50px;
+}
+
+/* Boutons bleus (actions principales) */
+#file-button, #paste-button, #play-button, #restart-button {
     background-color: var(--primary-color);
 }
 
-button:hover {
+#file-button:hover, #paste-button:hover, #play-button:hover, #restart-button:hover {
     background-color: var(--primary-hover);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-button:active, button.active {
+#file-button:active, #paste-button:active, #play-button:active, #restart-button:active,
+#file-button.active, #paste-button.active, #play-button.active, #restart-button.active {
     background-color: var(--primary-active);
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Bouton pour choisir un fichier */
-#file-button {
-    background-color: var(--primary-color);
-}
-
-#file-button:hover {
-    background-color: var(--primary-hover);
-}
-
-#file-button:active {
-    background-color: var(--primary-active);
-}
-
-/* Exception pour les boutons de suppression en orange */
-#clear-button {
+/* Boutons orange (suppression/pause) */
+#clear-button, #pause-button {
     background-color: var(--secondary-color);
 }
 
-#clear-button:hover {
+#clear-button:hover, #pause-button:hover {
     background-color: var(--secondary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-#clear-button:active {
+#clear-button:active, #pause-button:active,
+#clear-button.active, #pause-button.active {
     background-color: var(--secondary-color);
     opacity: 0.9;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Disposition des boutons */
-.button-container {
+.button-container, .text-controls {
     display: flex;
     gap: 15px;
-    justify-content: center;
-    margin-top: 30px;
+    justify-content: space-between;
     width: 100%;
 }
 
+.button-container {
+    margin-top: 30px;
+}
+
 .text-controls {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
     margin-bottom: 20px;
-    width: 100%;
 }
 
 .file-input {
     display: none;
-}
-
-.margin-bottom {
-    margin-bottom: 10px;
 }
 
 /* Adaptation pour mobile */
@@ -302,12 +270,7 @@ button:active, button.active {
         width: 100%;
     }
 
-    .text-controls {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .button-container {
+    .text-controls, .button-container {
         flex-direction: column;
         gap: 10px;
     }
@@ -316,9 +279,7 @@ button:active, button.active {
         width: 100%;
         padding: 12px 0;
         margin: 0;
-        min-height: 48px;
-        max-height: 48px;
-        overflow: hidden;
+        height: 48px;
     }
 
     #text-area {

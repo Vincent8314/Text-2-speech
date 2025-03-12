@@ -579,7 +579,7 @@ const translations = {
         'title': 'Lecteur Text-to-Speech',
         'voice': '🎤 Voix:',
         'speed': '⚡ Vitesse:',
-        'chooseFile': '📄 Choisir un fichier .txt',
+        'chooseFile': '📄 Choisir un doc.txt',
         'paste': '📋 Coller un texte',
         'clear': '🗑️ Effacer le contenu',
         'play': '▶ Lire',
